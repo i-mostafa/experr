@@ -2,7 +2,7 @@
   "name": "experr",
   "version": "1.0.3",
   "description": "express error handler module",
-  "main": "lib/index.js",
+  "main": "index.js",
   "scripts": {
     "build": "tsc",
     "prepare": "npm run build"
@@ -21,7 +21,8 @@
     "url": "https://github.com/i-mostafa/experr/issues"
   },
   "files": [
-    "lib/**/*"
+    "lib/**/*",
+    "index.js"
   ],
   "types": "lib/*.d.ts",
   "homepage": "https://github.com/i-mostafa/experr#readme",
