@@ -1,0 +1,31 @@
+{
+  "name": "experr",
+  "version": "1.0.0",
+  "description": "express error handler module",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "prepare": "npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/i-mostafa/experr.git"
+  },
+  "keywords": [
+    "express",
+    "error"
+  ],
+  "author": "islam mostafa - islam.mostafa.fahmey@gmail.com",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/i-mostafa/experr/issues"
+  },
+  "files": [
+    "lib/**/*"
+  ],
+  "types": "lib/*.d.ts",
+  "homepage": "https://github.com/i-mostafa/experr#readme",
+  "devDependencies": {
+    "typescript": "^4.4.3"
+  }
+}
