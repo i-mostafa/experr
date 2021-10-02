@@ -22,9 +22,10 @@
   },
   "files": [
     "lib/**/*",
+    "types/**/*",
     "index.js"
   ],
-  "types": "lib/*.d.ts",
+  "types": "types/*.d.ts",
   "homepage": "https://github.com/i-mostafa/experr#readme",
   "devDependencies": {
     "typescript": "^4.4.3"
