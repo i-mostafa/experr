@@ -6,9 +6,7 @@ import { IExpErrOpt, IExpError } from "./interfaces";
 
 const ExpErr = class {
   options: IExpErrOpt;
-  /**
-   *  @description ExpErr is an error handler model for express framework
-   */
+
   constructor(options: IExpErrOpt = defaultOptions) {
     this.options = options;
     this.fillOptions(options);
@@ -67,5 +65,9 @@ const ExpErr = class {
   targetNotFound = (req: Request, res: Response, next: NextFunction) =>
     next(ExpErrors.targetNotFound(req));
 };
+
+/**
+ *  @description ExpErr is an error handler model for express framework
+ */
 
 export default new ExpErr();
