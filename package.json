@@ -1,6 +1,6 @@
 {
   "name": "experr",
-  "version": "1.0.6",
+  "version": "1.0.5",
   "description": "express error handler module",
   "main": "index.js",
   "scripts": {
@@ -22,9 +22,10 @@
   },
   "files": [
     "lib/**/*",
+    "types/greater.d.ts",
     "index.js"
   ],
-  "types": "types",
+  "types": "types/greater.d.ts",
   "homepage": "https://github.com/i-mostafa/experr#readme",
   "devDependencies": {
     "typescript": "^4.4.3"
