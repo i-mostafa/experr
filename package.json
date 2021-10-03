@@ -25,7 +25,7 @@
     "types/greater.d.ts",
     "index.js"
   ],
-  "types": "types/greater.d.ts",
+  "typings": "types/greater",
   "homepage": "https://github.com/i-mostafa/experr#readme",
   "devDependencies": {
     "typescript": "^4.4.3"
