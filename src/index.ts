@@ -1,3 +1,11 @@
-import { Greater } from "./greater";
+import { ExpErr } from "./ExpErr";
 
-export { Greater };
+declare global {
+  namespace Express {
+    interface Request {
+      error: Function;
+    }
+  }
+}
+
+export { ExpErr };
