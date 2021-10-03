@@ -1,2 +1,1 @@
-export declare const Greeter: (name: string) => string;
-//# sourceMappingURL=greater.d.ts.map
+export declare const Greater: (name: string) => string;
