@@ -1,4 +1,8 @@
-import { ExpErr } from "./ExpErr";
+import { ExpErr, catchAsync } from "./ExpErr";
+import AppErr from "./AppError";
+import { StatusCodes } from "./StatusCodes";
+import ExpErrors from "./ExpErrors";
+import { ExpErrStatuses } from "./constants";
 
 declare global {
   namespace Express {
@@ -8,4 +12,5 @@ declare global {
   }
 }
 
-export { ExpErr };
+export { ExpErr, AppErr, ExpErrors, StatusCodes, ExpErrStatuses, catchAsync };
+export default new ExpErr();

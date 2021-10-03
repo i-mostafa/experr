@@ -1,92 +1,62 @@
-import { NextFunction, Request, Response } from "express";
-import { ExpErrStatuses } from "./constants";
-
-interface IExpErrOpt {
-  defaultErrStatusCode: number;
-  defaultErrStatus?: string;
-  defaultErrCode?: number;
-  defaultErrMessage?: string;
-  showStack?: boolean;
-  logError?: boolean;
-}
-
-export interface IExpError {
-  message: string;
-  status?: string | "error" | "failed";
-  statusCode?: number;
-  errCode?: number | string;
-}
-
-const AppErr = class extends Error {
-  status?: string | "error" | "failed";
-  statusCode?: number;
-  errCode?: number | string;
-
-  constructor(err: IExpError & string, options: IExpErrOpt) {
-    super(err.message || err || options.defaultErrMessage);
-    this.statusCode = err.statusCode || options.defaultErrStatusCode;
-    this.status = err.status || options.defaultErrStatus;
-    this.errCode = err.errCode || options.defaultErrCode;
-    options.showStack && Error.captureStackTrace(this, this.constructor);
-  }
-};
-
-// class ExpErr extends Error {
-//   status?: string | "error" | "failed";
-//   statusCode?: number;
-//   errCode?: number | string;
-//   isOperational: boolean;
-
-//   constructor(err: IExpError & string) {
-//     super(err.message || err);
-//     this.statusCode = err.statusCode;
-//     this.status = err.status;
-//     this.errCode = err.errCode;
-//     this.isOperational = true;
-//     Error.captureStackTrace(this, this.constructor);
-//   }
-// }
-
-export const expErr =
-  (options: IExpErrOpt) =>
-  (req: Request, res: Response, next: NextFunction) => {
-    req.error = (err: IExpError & string) => next(new AppErr(err, options));
-    next();
-  };
+import { Application, NextFunction, Request, Response } from "express";
+import ExpErrors from "./ExpErrors";
+import AppErr from "./AppError";
+import { defaultOptions } from "./constants";
+import { IExpErrOpt, IExpError } from "./interfaces";
 
 export const ExpErr = class {
-  config: Function;
-  handler: Function;
+  #options: IExpErrOpt;
 
-  constructor(
-    options: IExpErrOpt = {
-      defaultErrStatus: ExpErrStatuses.error,
-      defaultErrStatusCode: 500,
-      defaultErrMessage: "Internal server error",
-      showStack: true,
-      logError: true,
-    }
-  ) {
-    console.log(options);
-    this.config = (req: Request, res: Response, next: NextFunction) => {
-      req.error = (err: IExpError & string) => next(new AppErr(err, options));
-      next();
-    };
+  constructor(options: IExpErrOpt = defaultOptions) {
+    this.#options = options;
+    this.#fillOptions(options);
+  }
 
-    this.handler = (
-      err: IExpError & string & Error,
-      req: Request,
-      res: Response,
-      next: NextFunction
-    ) => {
-      options.logError && console.log(err);
-
-      res.status(err.statusCode || options.defaultErrStatusCode).json({
-        status: err.status || options.defaultErrStatus,
-        errCode: err.errCode || options.defaultErrCode,
-        stack: options.showStack ? err.stack : undefined,
-        message: err.message || err || options.defaultErrMessage,
-      });
+  #fillOptions(options: IExpErrOpt): void {
+    this.#options = {
+      ...options,
+      defaultErrStatus:
+        options.defaultErrStatus || defaultOptions.defaultErrStatus,
+      defaultErrStatusCode:
+        options.defaultErrStatusCode || defaultOptions.defaultErrStatusCode,
+      defaultErrMessage:
+        options.defaultErrMessage || defaultOptions.defaultErrMessage,
+      //   showStack: options.showStack || defaultOptions.showStack,
+      logError: options.logError || defaultOptions.logError,
     };
   }
+
+  config(options?: IExpErrOpt) {
+    options && this.#fillOptions(options);
+
+    return (req: Request, res: Response, next: NextFunction) => {
+      req.error = (err: IExpError) => next(new AppErr(err));
+      next();
+    };
+  }
+  catchAppErrors(app: Application) {
+    app.all("*", this.targetNotFound);
+    app.use(this.handler);
+  }
+
+  handler(err: IExpError, req: Request, res: Response, next: NextFunction) {
+    this.#options.logError && console.log(err);
+
+    res.status(err.statusCode || this.#options.defaultErrStatusCode).json({
+      status: err.status || this.#options.defaultErrStatus,
+      errCode: err.errCode || this.#options.defaultErrCode,
+      // stack: options.showStack ? err.stack : undefined,
+      message: err.message || err || this.#options.defaultErrMessage,
+    });
+  }
+
+  targetNotFound(req: Request, res: Response, next: NextFunction) {
+    return next(ExpErrors.targetNotFound(req));
+  }
 };
+
+export const catchAsync =
+  (fn: (req: Request, res: Response, next: NextFunction) => Promise<void>) =>
+  (req: Request, res: Response, next: NextFunction) => {
+    return fn(req, res, next).catch(next);
+  };
