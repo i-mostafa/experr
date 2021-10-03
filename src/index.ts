@@ -1,3 +1,6 @@
+/**
+ * ExpErr is an error handler model for express framework
+ */
 import ExpErr from "./ExpErr";
 import catchAsync from "./catchAsync";
 import AppErr from "./AppError";

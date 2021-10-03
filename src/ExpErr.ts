@@ -3,13 +3,11 @@ import ExpErrors from "./ExpErrors";
 import AppErr from "./AppError";
 import { defaultOptions } from "./constants";
 import { IExpErrOpt, IExpError } from "./interfaces";
-/**
- * ExpErr is an error handler model for express framework s
- */
+
 const ExpErr = class {
   options: IExpErrOpt;
   /**
-   * ExpErr is an error handler model for express framework sa
+   *  @description ExpErr is an error handler model for express framework
    */
   constructor(options: IExpErrOpt = defaultOptions) {
     this.options = options;
@@ -70,7 +68,4 @@ const ExpErr = class {
     next(ExpErrors.targetNotFound(req));
 };
 
-/**
- * ExpErr is an error handler model for express framework
- */
 export default new ExpErr();
