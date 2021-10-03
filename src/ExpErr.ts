@@ -67,6 +67,7 @@ export const ExpErr = class {
       logError: true,
     }
   ) {
+    console.log(options);
     this.config = (req: Request, res: Response, next: NextFunction) => {
       req.error = (err: IExpError & string) => next(new AppErr(err, options));
       next();
