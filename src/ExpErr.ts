@@ -25,7 +25,10 @@ const ExpErr = class {
       logError: options.logError || defaultOptions.logError,
     };
   }
-
+  /**
+   * @param  {IExpErrOpt} options?
+   * @description add configration options and assign the error function to request
+   */
   config(options?: IExpErrOpt) {
     options && this.fillOptions(options);
 
@@ -34,6 +37,10 @@ const ExpErr = class {
       next();
     };
   }
+  /**
+   * @param  {Application} app
+   * @description catch errors of the application and missing targets
+   */
   catchAppErrors(app: Application) {
     app.all("*", this.targetNotFound);
     app.use(this.handler);
@@ -59,4 +66,7 @@ const ExpErr = class {
     next(ExpErrors.targetNotFound(req));
 };
 
+/**
+ * ExpErr is an error handler model for express framework
+ */
 export default new ExpErr();
