@@ -4,7 +4,7 @@ import AppErr from "./AppError";
 import { defaultOptions } from "./constants";
 import { IExpErrOpt, IExpError } from "./interfaces";
 
-export const ExpErr = class {
+const ExpErr = class {
   #options: IExpErrOpt;
 
   constructor(options: IExpErrOpt = defaultOptions) {
@@ -55,8 +55,4 @@ export const ExpErr = class {
   }
 };
 
-export const catchAsync =
-  (fn: (req: Request, res: Response, next: NextFunction) => Promise<void>) =>
-  (req: Request, res: Response, next: NextFunction) => {
-    return fn(req, res, next).catch(next);
-  };
+export default new ExpErr();

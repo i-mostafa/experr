@@ -1,4 +1,5 @@
-import { ExpErr, catchAsync } from "./ExpErr";
+import ExpErr from "./ExpErr";
+import catchAsync from "./catchAsync";
 import AppErr from "./AppError";
 import { StatusCodes } from "./StatusCodes";
 import ExpErrors from "./ExpErrors";
@@ -13,4 +14,3 @@ declare global {
 }
 
 export { ExpErr, AppErr, ExpErrors, StatusCodes, ExpErrStatuses, catchAsync };
-export default new ExpErr();
