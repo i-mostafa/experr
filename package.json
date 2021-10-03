@@ -1,6 +1,6 @@
 {
   "name": "experr",
-  "version": "1.0.11",
+  "version": "1.0.12",
   "description": "express error handler module",
   "main": "lib/index.js",
   "scripts": {
