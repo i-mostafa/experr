@@ -2,7 +2,7 @@
   "name": "experr",
   "version": "1.0.9",
   "description": "express error handler module",
-  "main": "index.js",
+  "main": "lib/index.js",
   "scripts": {
     "build": "tsc",
     "prepare": "npm run build"
