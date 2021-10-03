@@ -5,15 +5,15 @@ import { defaultOptions } from "./constants";
 import { IExpErrOpt, IExpError } from "./interfaces";
 
 const ExpErr = class {
-  #options: IExpErrOpt;
+  options: IExpErrOpt;
 
   constructor(options: IExpErrOpt = defaultOptions) {
-    this.#options = options;
-    this.#fillOptions(options);
+    this.options = options;
+    this.fillOptions(options);
   }
 
-  #fillOptions(options: IExpErrOpt): void {
-    this.#options = {
+  fillOptions(options: IExpErrOpt): void {
+    this.options = {
       ...options,
       defaultErrStatus:
         options.defaultErrStatus || defaultOptions.defaultErrStatus,
@@ -27,7 +27,7 @@ const ExpErr = class {
   }
 
   config(options?: IExpErrOpt) {
-    options && this.#fillOptions(options);
+    options && this.fillOptions(options);
 
     return (req: Request, res: Response, next: NextFunction) => {
       req.error = (err: IExpError) => next(new AppErr(err));
@@ -39,20 +39,24 @@ const ExpErr = class {
     app.use(this.handler);
   }
 
-  handler(err: IExpError, req: Request, res: Response, next: NextFunction) {
-    this.#options.logError && console.log(err);
+  handler = (
+    err: IExpError,
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
+    this.options.logError && console.log(err);
 
-    res.status(err.statusCode || this.#options.defaultErrStatusCode).json({
-      status: err.status || this.#options.defaultErrStatus,
-      errCode: err.errCode || this.#options.defaultErrCode,
+    res.status(err.statusCode || this.options.defaultErrStatusCode).json({
+      status: err.status || this.options.defaultErrStatus,
+      errCode: err.errCode || this.options.defaultErrCode,
       // stack: options.showStack ? err.stack : undefined,
-      message: err.message || err || this.#options.defaultErrMessage,
+      message: err.message || err || this.options.defaultErrMessage,
     });
-  }
+  };
 
-  targetNotFound(req: Request, res: Response, next: NextFunction) {
-    return next(ExpErrors.targetNotFound(req));
-  }
+  targetNotFound = (req: Request, res: Response, next: NextFunction) =>
+    next(ExpErrors.targetNotFound(req));
 };
 
 export default new ExpErr();
